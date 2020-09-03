@@ -9,7 +9,7 @@
     dest: /tmp/td-agent.sh
     mode: 755
     force: yes
-  when: ansible_distribution_major_version == '16' and not fluentd_bin.stst.exists
+  when: ansible_distribution_major_version == '16' and not fluentd_bin.stat.exists
 
 - name: Download fluentd installer (Ubuntu 18.04)
   get_url:
@@ -17,7 +17,7 @@
     dest: /tmp/td-agent.sh
     mode: 755
     force: yes
-  when: ansible_distribution_major_version == '18' and not fluentd_bin.stst.exists
+  when: ansible_distribution_major_version == '18' and not fluentd_bin.stat.exists
 
 - name: Download fluentd installer (Ubuntu 20.04)
   get_url:
@@ -25,15 +25,15 @@
     dest: /tmp/td-agent.sh
     mode: 755
     force: yes
-  when: ansible_distribution_major_version == '20' and not fluentd_bin.stst.exists
+  when: ansible_distribution_major_version == '20' and not fluentd_bin.stat.exists
 
 - name: Execute the fluentd installer
   shell: /tmp/td-agent.sh
-  when: not fluentd_bin.stst.exists
+  when: not fluentd_bin.stat.exists
 
 - name: Remove the fluentd installer
   file: path=/tmp/td-agent.sh state=absent
-  when: not fluentd_bin.stst.exists
+  when: not fluentd_bin.stat.exists
 
 - name: Install fluentd plugins via name
   gem:
