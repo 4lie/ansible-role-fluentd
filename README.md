@@ -15,6 +15,9 @@ Fluentd is an open source data collector for unified logging layer.
 ## Role Variables
 
 ``` yaml
+# Worker count
+fluentd_worker_count: 1
+
 # Paths to custom configuration templates
 fluentd_custom_conf: []
 

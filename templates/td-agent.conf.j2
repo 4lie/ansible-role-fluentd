@@ -1,7 +1,7 @@
 # {{ ansible_managed }}
 
 <system>
-  workers {{ ansible_processor_vcpus }}
+  workers {{ fluentd_worker_count }}
 </system>
 
 @include /etc/td-agent/conf.d/*.conf

@@ -1,3 +1,6 @@
+# Worker count
+fluentd_worker_count: 1
+
 # Paths to custom configuration templates
 fluentd_custom_conf: []
 
