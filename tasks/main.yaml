@@ -4,7 +4,7 @@
     dest: /tmp/td-agent.sh
     mode: 755
     force: yes
-  when: ansible_distribution_major_version > '16'
+  when: ansible_distribution_major_version == '16'
 
 - name: Download fluentd installer (Ubuntu 18.04)
   get_url:
@@ -12,7 +12,7 @@
     dest: /tmp/td-agent.sh
     mode: 755
     force: yes
-  when: ansible_distribution_major_version > '18'
+  when: ansible_distribution_major_version == '18'
 
 - name: Download fluentd installer (Ubuntu 20.04)
   get_url:
@@ -20,7 +20,7 @@
     dest: /tmp/td-agent.sh
     mode: 755
     force: yes
-  when: ansible_distribution_major_version > '20'
+  when: ansible_distribution_major_version == '20'
 
 - name: Execute the fluentd installer
   command: "/tmp/td-agent.sh"
