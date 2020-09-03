@@ -23,4 +23,59 @@
   when: ansible_distribution_major_version == '20'
 
 - name: Execute the fluentd installer
-  command: "/tmp/td-agent.sh"
+  shell: /tmp/td-agent.sh
+
+- name: Remove the fluentd installer
+  file: path=/tmp/td-agent.sh state=absent
+
+- name: Install fluentd plugins via name
+  gem:
+    name: "{{ item.name }}"
+    executable: /opt/td-agent/bin/fluent-gem
+    state: present
+    user_install: false
+    version: "{{ item.version | default(omit) }}"
+  with_items: "{{ fluentd_plugins | selectattr('url', 'undefined') | list }}"
+  notify: restart td-agent
+
+- name: Install fluentd plugins via url
+  get_url:
+    url: "{{ item }}"
+    dest: /etc/td-agent/plugin
+  with_items: "{{ fluentd_plugins | selectattr('name', 'undefined') | map(attribute='url') | list }}"
+  notify: restart td-agent
+
+- name: Create fluentd configs directory
+  file:
+    path: /etc/td-agent/conf.d
+    state: directory
+
+- name: Create fluentd main configuration file
+  template:
+    src: td-agent.conf.j2
+    dest: /etc/td-agent/td-agent.conf
+  notify: restart td-agent
+
+- name: Create fluentd additional configuration files
+  template:
+    src: "{{ item }}.conf.j2"
+    dest: "/etc/td-agent/conf.d/{{ item }}.conf"
+  with_items:
+    - source
+    - filter
+    - match
+    - plugin
+  notify: restart td-agent
+
+- name: Create fluentd custom configuration
+  template:
+    src: "{{ item }}.j2"
+    dest: "/etc/td-agent/conf.d/{{ item.split('/')[-1] }}"
+  with_items: "{{ fluentd_custom_conf }}"
+  notify: restart td-agent
+
+- name: Ensure fluentd (td-agent) service is enabled
+  service:
+    name: td-agent
+    enabled: true
+    use: service
