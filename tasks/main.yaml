@@ -56,18 +56,7 @@
     dest: /etc/td-agent/td-agent.conf
   notify: restart td-agent
 
-- name: Create fluentd additional configuration files
-  template:
-    src: "{{ item }}.conf.j2"
-    dest: "/etc/td-agent/conf.d/{{ item }}.conf"
-  with_items:
-    - source
-    - filter
-    - match
-    - plugin
-  notify: restart td-agent
-
-- name: Create fluentd custom configuration
+- name: Create fluentd custom configuration files
   template:
     src: "{{ item }}.j2"
     dest: "/etc/td-agent/conf.d/{{ item.split('/')[-1] }}"
