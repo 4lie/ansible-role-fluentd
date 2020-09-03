@@ -1,0 +1,14 @@
+galaxy_info:
+  role_name: fluentd
+  author: Rashad Ansari
+  description: Set up Fluentd in Ubuntu systems
+  company: $lie
+  min_ansible_version: 2.6
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
+  galaxy_tags:
+    - fluentd
+
+dependencies: []

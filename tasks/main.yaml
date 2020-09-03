@@ -1,0 +1,26 @@
+- name: Download fluentd installer (Ubuntu 16.04)
+  get_url:
+    url: https://toolbelt.treasuredata.com/sh/install-ubuntu-xenial-td-agent4.sh
+    dest: /tmp/td-agent.sh
+    mode: 755
+    force: yes
+  when: ansible_distribution_major_version > '16'
+
+- name: Download fluentd installer (Ubuntu 18.04)
+  get_url:
+    url: https://toolbelt.treasuredata.com/sh/install-ubuntu-bionic-td-agent4.sh
+    dest: /tmp/td-agent.sh
+    mode: 755
+    force: yes
+  when: ansible_distribution_major_version > '18'
+
+- name: Download fluentd installer (Ubuntu 20.04)
+  get_url:
+    url: https://toolbelt.treasuredata.com/sh/install-ubuntu-focal-td-agent4.sh
+    dest: /tmp/td-agent.sh
+    mode: 755
+    force: yes
+  when: ansible_distribution_major_version > '20'
+
+- name: Execute the fluentd installer
+  command: "/tmp/td-agent.sh"
