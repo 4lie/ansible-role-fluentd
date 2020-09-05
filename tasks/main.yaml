@@ -61,12 +61,14 @@
   template:
     src: td-agent.conf.j2
     dest: /etc/td-agent/td-agent.conf
+    mode: 0644
   notify: restart td-agent
 
 - name: Create fluentd custom configuration files
   template:
     src: "{{ item }}.j2"
     dest: "/etc/td-agent/conf.d/{{ item.split('/')[-1] }}"
+    mode: 0644
   with_items: "{{ fluentd_custom_conf }}"
   notify: restart td-agent
 
